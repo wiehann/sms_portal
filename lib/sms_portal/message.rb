@@ -9,8 +9,8 @@ module SmsPortal
           numto:     number,
           data1:     message,
           type:     'sendparam',
-          username:  ENV['SMS_PORTAL_USERNAME'],
-          password:  ENV['SMS_PORTAL_PASSWORD']
+          username:  SmsPortal.config.username,
+          password:  SmsPortal.config.password
         }
       }
     end
