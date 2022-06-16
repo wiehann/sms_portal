@@ -36,6 +36,17 @@ SmsPortal.configure do |config|
 end
 ```
 
+To intercept messages in testing/development environments there is an extra configuration option to route all messages to that number.
+```
+# as environment variable
+$ export SMS_PORTAL_INTERCEPTOR=phone_number
+
+# or in config/initializers/sms_portal.rb
+SmsPortal.configure do |config|
+  config.interceptor = phone_number
+end
+```
+
 ## Usage
 
 ```
