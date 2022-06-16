@@ -3,20 +3,21 @@ module SmsPortal
     include HTTParty
     base_uri "http://www.mymobileapi.com"
 
-    def initialize(number, message)
+    def initialize(recipient, message)
       @options = {
         query: {
-          numto:     number,
+          numto:     SmsPortal.config.interceptor || recipient,
           data1:     message,
           type:     'sendparam',
           username:  SmsPortal.config.username,
           password:  SmsPortal.config.password
-        }
+        },
+        format: :xml
       }
     end
 
     def deliver!
-      self.class.get('/api5/http5.aspx', @options)
+      self.class.get('/api5/http5.aspx', @options).parsed_response
     end
   end
 end

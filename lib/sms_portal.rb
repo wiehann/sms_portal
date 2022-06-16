@@ -16,8 +16,8 @@ module SmsPortal
     yield(config)
   end
 
-  def self.deliver(number, message)
-    message = Message.new(number, message)
+  def self.deliver(recipient, message)
+    message = Message.new(recipient, message)
     message.deliver!
   end
 end
