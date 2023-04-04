@@ -1,0 +1,34 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - uses: ruby/setup-ruby@master
+        with:
+          ruby-version: 2.7.6
+
+      - name: Install dependent libraries
+        run: sudo apt-get install libpq-dev
+      - name: Ruby gem cache
+        uses: actions/cache@v1
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+      - name: Install gems
+        run: |
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+
+      - name: Tests
+        env:
+          RAILS_ENV: test
+          SMS_PORTAL_USERNAME: test
+          SMS_PORTAL_PASSWORD: test
+        run: bundle exec rake test
